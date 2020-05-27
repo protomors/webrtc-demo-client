@@ -1,16 +1,16 @@
 use std::io;
 use std::net::SocketAddr;
 
+use crate::udp::{UdpMuxSet, UdpMuxSocket, UdpStream};
 use futures::{Async, AsyncSink, Future, Poll, Sink, StartSend, Stream};
 use tokio_codec::{self, Decoder};
-use crate::udp::{UdpMuxSet, UdpMuxSocket, UdpStream};
 
-use bytes::Bytes;
 use crate::crypto::Identity;
 use crate::dtls;
 use crate::error::DemoError;
 use crate::ice::Ice;
 use crate::stun::StunStream;
+use bytes::Bytes;
 use tokio_openssl::SslStream;
 
 use tokio_codec::{BytesCodec, Framed};
@@ -159,7 +159,8 @@ impl PeerConnection {
                 });
 
                 sctp_stack
-            }).map_err(|error| {
+            })
+            .map_err(|error| {
                 error!("client error: {:?}", error);
             });
 

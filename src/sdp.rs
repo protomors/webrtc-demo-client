@@ -68,9 +68,11 @@ impl FromStr for SessionDescription {
                 .ok_or("cannot parse sdp type")?;
             let sdp_value = parts.next().ok_or("cannot parse sdp value")?;
             match sdp_type {
-                'v' => if sdp_value != "0" {
-                    return Err("unsupported SDP version".into());
-                },
+                'v' => {
+                    if sdp_value != "0" {
+                        return Err("unsupported SDP version".into());
+                    }
+                }
                 'o' => origin = Some(sdp_value.parse()?),
                 'a' => match media_descriptions.last_mut() {
                     Some(md) => md.attributes.push(sdp_value.parse()?),
@@ -183,7 +185,8 @@ impl FromStr for Attribute {
                         .chars()
                         .filter(|c| *c != ':')
                         .collect::<String>(),
-                ).map_err(|_| "error hex-decoding hash")?;
+                )
+                .map_err(|_| "error hex-decoding hash")?;
                 Attribute::Fingerprint(hash)
             }
             "sctp-port" => Attribute::SctpPort(
@@ -281,7 +284,8 @@ impl ToString for SetupRole {
             SetupRole::Passive => "passive",
             SetupRole::Actpass => "actpass",
             SetupRole::Holdconn => "holdconn",
-        }.to_string()
+        }
+        .to_string()
     }
 }
 

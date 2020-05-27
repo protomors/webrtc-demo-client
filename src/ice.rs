@@ -130,7 +130,8 @@ impl ToString for Transport {
         match self {
             Transport::UDP => "udp",
             Transport::TCP => "tcp",
-        }.to_string()
+        }
+        .to_string()
     }
 }
 
@@ -163,7 +164,8 @@ impl ToString for CandidateType {
             CandidateType::ServerReflexive => "srflx",
             CandidateType::PeerReflexive => "prflx",
             CandidateType::Relay => "relay",
-        }.to_string()
+        }
+        .to_string()
     }
 }
 
@@ -176,12 +178,15 @@ mod tests {
     static CANDIDATE2: &str = "candidate:2933284416 1 udp 2113939711 2601:280:5a80:1600:7c91:82e6:d1b8:8e14 53378 typ host generation 0 ufrag eHA1 network-cost 50";
     static CANDIDATE3: &str = "candidate:842163049 1 udp 1677729535 67.161.192.48 53377 typ srflx raddr 192.168.74.16 rport 53377 generation 0 ufrag eHA1 network-cost 50";
     static CANDIDATE4: &str = "candidate:4231669940 1 udp 1677732095 2601:280:5a80:1600:7874:79a8:e1b1:ab05 53378 typ srflx raddr 2601:280:5a80:1600:7c91:82e6:d1b8:8e14 rport 53378 generation 0 ufrag eHA1 network-cost 50";
-    static CANDIDATE5: &str = "candidate:0 1 UDP 2122187007 617f2e0c-f25f-4595-8143-9dd5eb1d85e5.local 42950 typ host";
+    static CANDIDATE5: &str =
+        "candidate:0 1 UDP 2122187007 617f2e0c-f25f-4595-8143-9dd5eb1d85e5.local 42950 typ host";
     static CANDIDATE6: &str = "candidate:6 1 TCP 2105458943 617f2e0c-f25f-4595-8143-9dd5eb1d85e5.local 9 typ host tcptype active";
 
     #[test]
     fn test_sdp() {
-        let candidate_strings = &[CANDIDATE1, CANDIDATE2, CANDIDATE3, CANDIDATE4, CANDIDATE5, CANDIDATE6];
+        let candidate_strings = &[
+            CANDIDATE1, CANDIDATE2, CANDIDATE3, CANDIDATE4, CANDIDATE5, CANDIDATE6,
+        ];
         for candidate_string in candidate_strings {
             let candidate: Candidate = candidate_string.parse().unwrap();
             let s = candidate.to_string();

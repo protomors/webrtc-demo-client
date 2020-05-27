@@ -63,8 +63,8 @@ fn main() {
             Ok(ip) => {
                 info!("Using user-provided local address: {:?}", ip);
                 ip
-            },
-            Err(_) => panic!("Cannot parse IP address given as command-line argument.")
+            }
+            Err(_) => panic!("Cannot parse IP address given as command-line argument."),
         }
     } else {
         util::get_local_address()
@@ -104,20 +104,27 @@ fn main() {
                                         }
                                         let session: SimpleSession = sdp.sdp.parse().unwrap();
                                         info!("SDP recv:\n{}", session.to_string());
-                                        let answer = session.answer(&identity.fingerprint, &mut ice);
+                                        let answer =
+                                            session.answer(&identity.fingerprint, &mut ice);
                                         info!("SDP send:\n{}", answer.to_string());
-                                        let msg = Message::text(websocket::encode_answer(&answer, &message, &peer_name).unwrap());
+                                        let msg = Message::text(
+                                            websocket::encode_answer(&answer, &message, &peer_name)
+                                                .unwrap(),
+                                        );
                                         // TODO: this returns a future that needs to be driven.
                                         sink.start_send(msg).unwrap();
                                     }
                                     RelayPayload::Ice(ice_msg) => {
-                                        let candidate: Candidate = ice_msg.candidate.parse().unwrap();
+                                        let candidate: Candidate =
+                                            ice_msg.candidate.parse().unwrap();
                                         info!("ICE: recv candidate: {:?}", candidate);
 
                                         // HACK: For this demo, we're only looking at "host" type
                                         // candidates -- not the server-reflexive candidates that
                                         // would be needed for NAT traversal.
-                                        if candidate.type_ == CandidateType::Host && candidate.transport == Transport::UDP {
+                                        if candidate.type_ == CandidateType::Host
+                                            && candidate.transport == Transport::UDP
+                                        {
                                             if let SocketAddr::V4(s) = candidate.address {
                                                 info!("Peer IPv4 address: {}", candidate.address);
 
@@ -125,7 +132,11 @@ fn main() {
                                                 // just look for the peer IP that matches our IP.
                                                 if s.ip() == &local_address {
                                                     ice.candidate = Some(candidate);
-                                                    let peer = PeerConnection::new(handle.clone(), identity.clone(), ice.clone());
+                                                    let peer = PeerConnection::new(
+                                                        handle.clone(),
+                                                        identity.clone(),
+                                                        ice.clone(),
+                                                    );
 
                                                     // Provide our ICE candidate to the peer
                                                     let local_candidate = Candidate {
@@ -135,11 +146,21 @@ fn main() {
                                                         type_: CandidateType::Host,
                                                         username: ice.username.clone(),
                                                     };
-                                                    let msg = Message::text(websocket::encode_candidate(&local_candidate, &ice_msg.sdp_mid, &peer_name).unwrap());
+                                                    let msg = Message::text(
+                                                        websocket::encode_candidate(
+                                                            &local_candidate,
+                                                            &ice_msg.sdp_mid,
+                                                            &peer_name,
+                                                        )
+                                                        .unwrap(),
+                                                    );
                                                     // TODO: this returns a future that needs to be driven.
                                                     sink.start_send(msg).unwrap();
 
-                                                    handle.spawn(peer.map_err(|e| { error!("peer connection error: {}", e); () }));
+                                                    handle.spawn(peer.map_err(|e| {
+                                                        error!("peer connection error: {}", e);
+                                                        ()
+                                                    }));
                                                 }
                                             }
                                         }
@@ -156,7 +177,8 @@ fn main() {
 
                 Ok(())
             })
-        }).map_err(|e| {
+        })
+        .map_err(|e| {
             error!("Error connecting to websocket: {}", e);
             io::Error::new(io::ErrorKind::Other, e)
         });

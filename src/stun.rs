@@ -91,7 +91,6 @@ impl Stream for StunStream {
                         && stun_msg.method == Method::Binding
                     {
                         // This is a response to our binding request.
-
                     }
                 }
                 Async::Ready(None) => return Ok(Async::Ready(None)),
@@ -482,7 +481,8 @@ impl StunMessage {
                 "stun message length mismatch ({}; expected: {})",
                 message_length,
                 payload.len() - HEADER_SIZE
-            ).into());
+            )
+            .into());
         }
         let mut transaction_id = [0u8; TRANSACTION_ID_SIZE];
         transaction_id.copy_from_slice(&payload[8..20]);
@@ -575,7 +575,8 @@ impl StunMessage {
             .filter_map(|a| match a {
                 Attribute::Fingerprint(f) => Some(*f),
                 _ => None,
-            }).last()
+            })
+            .last()
             .unwrap();
 
         let bytes = self.render();

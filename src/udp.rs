@@ -270,7 +270,8 @@ impl Sink for UdpStream {
     type SinkError = io::Error;
 
     fn start_send(&mut self, payload: Bytes) -> StartSend<Self::SinkItem, Self::SinkError> {
-        self.outgoing_tx.start_send(payload)
+        self.outgoing_tx
+            .start_send(payload)
             // An error usually means the receiver is dropped; i.e. socket is closed.
             .map_err(|e| io::Error::new(io::ErrorKind::Other, e))
     }

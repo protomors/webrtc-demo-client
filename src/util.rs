@@ -10,7 +10,12 @@ use tokio;
 /// IPv4 address of this host.
 pub fn get_local_address() -> Ipv4Addr {
     fn log_candidate(iface: &Interface, message: &str) {
-        info!("interface candidate {} {:?} {}", iface.name, iface.ip(), message);
+        info!(
+            "interface candidate {} {:?} {}",
+            iface.name,
+            iface.ip(),
+            message
+        );
     }
 
     info!("Scanning for a suitable local network interface...");
