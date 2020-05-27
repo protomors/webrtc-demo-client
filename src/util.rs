@@ -190,7 +190,7 @@ pub fn hexdump(f: &mut fmt::Formatter, prefix: &str, buffer: &[u8]) -> Result<()
                 f,
                 "{}",
                 match *b {
-                    c @ 0x20...0x7E => c as char,
+                    c @ 0x20..=0x7E => c as char,
                     _ => '.',
                 }
             )?;
