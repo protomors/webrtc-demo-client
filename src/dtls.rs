@@ -5,8 +5,8 @@ use futures::Future;
 use openssl::ssl::{SslConnector, SslMethod, SslVerifyMode};
 use tokio_openssl::{SslConnectorExt, SslStream};
 
-use crypto::Identity;
-use udp::UdpStream;
+use crate::crypto::Identity;
+use crate::udp::UdpStream;
 
 /// When in client mode, we provide this domain name to OpenSSL for the purposes of verifying the
 /// domain name embedded in the server certificate.  (Since we don't actually verify the

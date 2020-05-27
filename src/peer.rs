@@ -3,14 +3,14 @@ use std::net::SocketAddr;
 
 use futures::{Async, AsyncSink, Future, Poll, Sink, StartSend, Stream};
 use tokio_codec::{self, Decoder};
-use udp::{UdpMuxSet, UdpMuxSocket, UdpStream};
+use crate::udp::{UdpMuxSet, UdpMuxSocket, UdpStream};
 
 use bytes::Bytes;
-use crypto::Identity;
-use dtls;
-use error::DemoError;
-use ice::Ice;
-use stun::StunStream;
+use crate::crypto::Identity;
+use crate::dtls;
+use crate::error::DemoError;
+use crate::ice::Ice;
+use crate::stun::StunStream;
 use tokio_openssl::SslStream;
 
 use tokio_codec::{BytesCodec, Framed};
@@ -239,7 +239,7 @@ impl Stream for DtlsLowerLayer {
     fn poll(&mut self) -> Poll<Option<LowerLayerPacket>, io::Error> {
         match self.dtls.poll()? {
             Async::Ready(Some(bytes)) => {
-                trace!("INCOMING DATAGRAM:\n{}", ::util::Hex(&bytes));
+                trace!("INCOMING DATAGRAM:\n{}", crate::util::Hex(&bytes));
                 // BytesMut => LowerLayerPacket
                 let mut buffer: [u8; 1500] = [0; 1500];
                 buffer[..bytes.len()].copy_from_slice(&bytes);
@@ -270,7 +270,7 @@ impl Sink for DtlsLowerLayer {
             AsyncSink::Ready => {
                 trace!(
                     "OUTGOING DATAGRAM:\n{}",
-                    ::util::Hex(&packet.buffer[0..packet.length])
+                    crate::util::Hex(&packet.buffer[0..packet.length])
                 );
                 self.dtls.poll_complete().unwrap(); // TODO: result?
                 Ok(AsyncSink::Ready)

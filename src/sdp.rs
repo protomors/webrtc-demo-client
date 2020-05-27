@@ -6,8 +6,8 @@ use std::str::FromStr;
 
 use hex;
 
-use error::DemoError;
-use ice::{Ice, IcePeer};
+use crate::error::DemoError;
+use crate::ice::{Ice, IcePeer};
 
 #[derive(Debug)]
 pub struct Origin {
@@ -508,7 +508,7 @@ mod tests {
 
     #[test]
     fn test_answer() {
-        let identity = ::crypto::Identity::generate().unwrap();
+        let identity = crate::crypto::Identity::generate().unwrap();
         let mut ice = Ice::new();
         let ss: SimpleSession = SDP1.parse().unwrap();
         let answer = ss.answer(&identity.fingerprint, &mut ice);

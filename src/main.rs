@@ -42,10 +42,10 @@ mod udp;
 mod util;
 mod websocket;
 
-use ice::{Candidate, CandidateType, Ice, Transport};
-use peer::PeerConnection;
-use sdp::SimpleSession;
-use websocket::{ClientMessage, RelayEnvelope, RelayPayload};
+use crate::ice::{Candidate, CandidateType, Ice, Transport};
+use crate::peer::PeerConnection;
+use crate::sdp::SimpleSession;
+use crate::websocket::{ClientMessage, RelayEnvelope, RelayPayload};
 
 static WS_URL: &str = "ws://127.0.0.1:8080/ws";
 

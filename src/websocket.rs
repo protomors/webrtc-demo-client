@@ -20,8 +20,8 @@
 
 use serde_json;
 
-use error::DemoError;
-use ice;
+use crate::error::DemoError;
+use crate::ice;
 
 ////////////////////////////////////////////////////////////////////////
 // client-server messages
@@ -135,7 +135,7 @@ pub fn parse_message(message: &str) -> ClientMessage {
     }
 }
 
-use sdp::SimpleSession;
+use crate::sdp::SimpleSession;
 
 pub fn encode_answer(
     answer: &SimpleSession,

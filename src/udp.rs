@@ -204,7 +204,7 @@ impl Stream for UdpMuxSocket {
 
                 // Dispatch the incoming datagram to the stream.
                 debug!("dispatching {} bytes of payload.", payload.len());
-                trace!("Payload:\n{}", ::util::hex(&payload));
+                trace!("Payload:\n{}", crate::util::hex(&payload));
                 match child.incoming_tx.try_send(payload) {
                     Ok(()) => {}
                     Err(e) => {

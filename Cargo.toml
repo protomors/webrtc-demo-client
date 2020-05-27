@@ -8,6 +8,7 @@ keywords = ["webrtc" ]
 categories = ["network-programming"]
 description = "A demonstration WebRTC client"
 readme = "README.md"
+edition = "2018"
 
 [dependencies]
 tungstenite = "0.6"

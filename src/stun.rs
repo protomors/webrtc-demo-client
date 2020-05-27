@@ -6,9 +6,9 @@ use futures::{Async, Poll, Stream};
 use rand::{self, RngCore};
 use tokio::io::AsyncWrite;
 
-use error::DemoError;
-use ice::Ice;
-use udp::UdpStream;
+use crate::error::DemoError;
+use crate::ice::Ice;
+use crate::udp::UdpStream;
 
 #[derive(Debug)]
 pub enum StunEvent {}
@@ -547,7 +547,7 @@ impl StunMessage {
         // Remove the dummy M-I attribute.
         self.attributes.pop();
         // Perform HMAC-SHA1
-        let hmac = ::crypto::hmac_sha1(password.as_bytes(), &bytes);
+        let hmac = crate::crypto::hmac_sha1(password.as_bytes(), &bytes);
         // Add the final message integrity attribute.
         self.attributes.push(Attribute::MessageIntegrity(hmac));
 
@@ -612,7 +612,7 @@ mod tests {
 
     #[test]
     fn test_xor_mapped_address() {
-        println!("input bytes:\n{}", ::util::Hex(&XOR_MAPPED_ADDRESS1));
+        println!("input bytes:\n{}", crate::util::Hex(&XOR_MAPPED_ADDRESS1));
         let expected_address = SocketAddr::new(IP1.parse().unwrap(), PORT1);
         let a = Attribute::parse(&mut XOR_MAPPED_ADDRESS1.to_vec().into(), &TID_1).unwrap();
         println!("a: {:?}", a);
@@ -623,7 +623,7 @@ mod tests {
         assert_eq!(s, expected_address);
 
         let mut bytes = Attribute::render(&a, &TID_1);
-        println!("re-rendered: bytes:\n{}", ::util::Hex(&bytes));
+        println!("re-rendered: bytes:\n{}", crate::util::Hex(&bytes));
         let a = Attribute::parse(&mut bytes, &TID_1).unwrap();
         println!("re-parsed a: {:?}", a);
         let s = match a {
@@ -632,7 +632,7 @@ mod tests {
         };
         assert_eq!(s, expected_address);
 
-        println!("input bytes:\n{}", ::util::Hex(&XOR_MAPPED_ADDRESS2));
+        println!("input bytes:\n{}", crate::util::Hex(&XOR_MAPPED_ADDRESS2));
         let expected_address = SocketAddr::new(IP2.parse().unwrap(), PORT2);
         let a = Attribute::parse(&mut XOR_MAPPED_ADDRESS2.to_vec().into(), &TID_2).unwrap();
         println!("a: {:?}", a);
@@ -643,7 +643,7 @@ mod tests {
         assert_eq!(s, expected_address);
 
         let mut bytes = Attribute::render(&a, &TID_2);
-        println!("re-rendered: bytes:\n{}", ::util::Hex(&bytes));
+        println!("re-rendered: bytes:\n{}", crate::util::Hex(&bytes));
         let a = Attribute::parse(&mut bytes, &TID_2).unwrap();
         println!("re-parsed a: {:?}", a);
         let s = match a {
@@ -663,6 +663,6 @@ mod tests {
         stun.push_attribute(Attribute::Fingerprint(0));
         println!("{:?}", stun);
         let bytes = stun.render();
-        println!("rendered:\n{}", ::util::Hex(&bytes));
+        println!("rendered:\n{}", crate::util::Hex(&bytes));
     }
 }

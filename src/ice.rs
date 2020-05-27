@@ -4,8 +4,8 @@ use std::str::FromStr;
 use hex;
 use rand::{self, RngCore};
 
-use error::DemoError;
-use util;
+use crate::error::DemoError;
+use crate::util;
 
 #[derive(Clone)]
 pub struct IcePeer {
