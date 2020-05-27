@@ -1,29 +1,7 @@
-extern crate futures;
-extern crate hex;
-extern crate openssl;
-extern crate serde;
-extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
-extern crate bytes;
-extern crate foreign_types;
-extern crate get_if_addrs;
-extern crate libc;
-extern crate openssl_sys;
-extern crate rand;
-extern crate tokio;
-extern crate tokio_codec;
-extern crate tokio_openssl;
-extern crate tokio_tungstenite;
-extern crate tungstenite;
-extern crate url;
 #[macro_use]
 extern crate log;
-extern crate crc;
-extern crate env_logger;
-extern crate tokio_core;
-extern crate tokio_timer;
-extern crate webrtc_sctp;
 
 use std::io;
 use std::net::SocketAddr;
