@@ -61,12 +61,12 @@ impl FromStr for SessionDescription {
         let mut media_descriptions: Vec<MediaDescription> = vec![];
         for line in s.lines() {
             let mut parts = line.splitn(2, '=');
-            let mut sdp_type = parts
+            let sdp_type = parts
                 .next()
                 .filter(|k| k.len() == 1)
                 .map(|s| s.chars().next().unwrap())
                 .ok_or("cannot parse sdp type")?;
-            let mut sdp_value = parts.next().ok_or("cannot parse sdp value")?;
+            let sdp_value = parts.next().ok_or("cannot parse sdp value")?;
             match sdp_type {
                 'v' => if sdp_value != "0" {
                     return Err("unsupported SDP version".into());
