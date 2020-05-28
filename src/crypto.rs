@@ -1,37 +1,17 @@
+use std::convert::TryFrom;
 use std::sync::Arc;
+use std::time::{Duration, SystemTime};
 
 use crate::error::DemoError;
 
 use openssl;
-use openssl::asn1::Asn1Time;
 use openssl::bn::BigNum;
 use openssl::ec::{Asn1Flag, EcGroup, EcKey};
-use openssl::error::ErrorStack;
 use openssl::hash::MessageDigest;
 use openssl::nid::Nid;
 use openssl::pkey::{PKey, Private};
 use openssl::sign::Signer;
 use openssl::x509::X509;
-use openssl_sys;
-
-/// The Rust openssl crate unfortunately has an extremely restrictive API for Asn1Time.  It only
-/// allow creating an Asn1Time based on a positive integer number of days from the current time.
-/// This isn't suitable for our case where we would like to represent a time in the past, thus we
-/// provide a custom constructor here that allows an Asn1Time to be built from a signed integer
-/// number of seconds relative to the current time.
-fn make_asn1time(offset: i64) -> Result<Asn1Time, DemoError> {
-    use foreign_types::ForeignType;
-    use std::ptr;
-
-    ::openssl_sys::init();
-    unsafe {
-        let handle = openssl_sys::X509_gmtime_adj(ptr::null_mut(), offset);
-        if handle.is_null() {
-            return Err(ErrorStack::get().into());
-        }
-        Ok(Asn1Time::from_ptr(handle))
-    }
-}
 
 #[derive(Clone)]
 pub struct Identity {
@@ -58,7 +38,11 @@ impl Identity {
         builder.set_serial_number(&serial)?;
         // Validity: Mimic the Chrome behavior of a not-before time of one day ago, and a not-after
         // time of one month from now.
-        let start = make_asn1time(-60 * 60 * 24)?;
+        let s = SystemTime::now()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap()
+            - Duration::from_secs(24 * 60 * 60);
+        let start = openssl::asn1::Asn1Time::from_unix(i64::try_from(s.as_secs()).unwrap())?;
         let stop = openssl::asn1::Asn1Time::days_from_now(30)?;
         builder.set_not_before(&start)?;
         builder.set_not_after(&stop)?;
