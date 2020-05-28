@@ -1399,7 +1399,6 @@ dependencies = [
  "tokio",
  "tokio-codec",
  "tokio-openssl",
- "tokio-timer",
  "tokio-tungstenite",
  "tungstenite",
  "url",

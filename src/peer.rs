@@ -167,7 +167,7 @@ impl PeerConnection {
         // BAND-AID: Delay TLS handshake one second
         use std::time::Duration;
         use std::time::Instant;
-        use tokio_timer::Delay;
+        use tokio::timer::Delay;
         let client = Delay::new(Instant::now() + Duration::new(1, 0))
             .map_err(|e| io::Error::new(io::ErrorKind::Other, e))
             .map_err(|_| ())

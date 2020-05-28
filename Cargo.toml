@@ -35,6 +35,5 @@ bytes = "0.4"
 env_logger = "0.7"
 tokio-codec = "0.1"
 crc = "1"
-tokio-timer = "0.2"
 
 webrtc-sctp = { path = "../webrtc-sctp" }
