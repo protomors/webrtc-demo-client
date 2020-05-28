@@ -17,7 +17,7 @@ use tokio_codec::{BytesCodec, Framed};
 use webrtc_sctp::stack::lowerlayer::{LowerLayerPacket, LowerLayerProtocol};
 use webrtc_sctp::stack::SctpStack;
 
-use tokio_core::reactor::Handle;
+use tokio::runtime::current_thread::Handle;
 
 static GREETING: &str = "Greetings from the magical land of Rust!";
 static FUN_FACTS: &[&str] = &[
@@ -173,7 +173,7 @@ impl PeerConnection {
             .map_err(|_| ())
             .map(|_| ())
             .and_then(|_| peer_engine);
-        handle.spawn(client);
+        handle.spawn(client).unwrap();
 
         PeerConnection {
             socket,

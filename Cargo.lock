@@ -871,12 +871,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "scoped-tls"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "332ffa32bf586782a3efaeb58f127980944bbc8c4d6913a86107ac2a5ab24b28"
-
-[[package]]
 name = "scopeguard"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1084,25 +1078,6 @@ dependencies = [
  "bytes 0.4.12",
  "futures",
  "tokio-io",
-]
-
-[[package]]
-name = "tokio-core"
-version = "0.1.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aeeffbbb94209023feaef3c196a41cbcdafa06b4a6f893f68779bb5e53796f71"
-dependencies = [
- "bytes 0.4.12",
- "futures",
- "iovec",
- "log",
- "mio",
- "scoped-tls",
- "tokio",
- "tokio-executor",
- "tokio-io",
- "tokio-reactor",
- "tokio-timer",
 ]
 
 [[package]]
@@ -1423,7 +1398,6 @@ dependencies = [
  "serde_json",
  "tokio",
  "tokio-codec",
- "tokio-core",
  "tokio-openssl",
  "tokio-timer",
  "tokio-tungstenite",

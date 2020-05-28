@@ -53,12 +53,11 @@ fn main() {
     // Generate a new ICE context for this session.
     let mut ice = Ice::new();
 
-    // Use tokio_core for compatibility with the current SCTP code which expects an old-style
     // single-threaded reactor.
     // TODO: Use new tokio API with multi-threaded reactor.
-    use tokio_core::reactor::Core;
-    let mut core = Core::new().unwrap();
-    let handle = core.handle();
+    use tokio::runtime::current_thread::Runtime;
+    let mut rt = Runtime::new().unwrap();
+    let handle = rt.handle();
 
     let url = url::Url::parse(WS_URL).unwrap();
     let client = tokio_tungstenite::connect_async(url)
@@ -138,7 +137,7 @@ fn main() {
                                                     handle.spawn(peer.map_err(|e| {
                                                         error!("peer connection error: {}", e);
                                                         ()
-                                                    }));
+                                                    })).unwrap();
                                                 }
                                             }
                                         }
@@ -161,6 +160,7 @@ fn main() {
             io::Error::new(io::ErrorKind::Other, e)
         });
 
-    core.run(client.map_err(|_e| ())).unwrap();
+    rt.spawn(client.map_err(|_e| ()));
+    rt.run().unwrap();
     //tokio::runtime::run(client.map_err(|_e| ()));
 }
