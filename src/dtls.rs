@@ -49,7 +49,7 @@ pub fn connect(
     let client = futures::future::ok(()).and_then(move |_| {
         connector
             .connect_async(&domain, stream)
-            .map_err(|e| io::Error::new(io::ErrorKind::Other, e))
+            .map_err(|_| io::Error::new(io::ErrorKind::Other, "Handshake error"))
     });
     Ok(client)
 }
