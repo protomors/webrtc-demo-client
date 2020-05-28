@@ -53,12 +53,6 @@ fn main() {
     // Generate a new ICE context for this session.
     let mut ice = Ice::new();
 
-    // single-threaded reactor.
-    // TODO: Use new tokio API with multi-threaded reactor.
-    use tokio::runtime::current_thread::Runtime;
-    let mut rt = Runtime::new().unwrap();
-    let handle = rt.handle();
-
     let url = url::Url::parse(WS_URL).unwrap();
     let client = tokio_tungstenite::connect_async(url)
         .and_then(move |(ws_stream, _)| {
@@ -110,7 +104,6 @@ fn main() {
                                                 if s.ip() == &local_address {
                                                     ice.candidate = Some(candidate);
                                                     let peer = PeerConnection::new(
-                                                        handle.clone(),
                                                         identity.clone(),
                                                         ice.clone(),
                                                     );
@@ -134,10 +127,10 @@ fn main() {
                                                     // TODO: this returns a future that needs to be driven.
                                                     sink.start_send(msg).unwrap();
 
-                                                    handle.spawn(peer.map_err(|e| {
+                                                    tokio::spawn(peer.map_err(|e| {
                                                         error!("peer connection error: {}", e);
                                                         ()
-                                                    })).unwrap();
+                                                    }));
                                                 }
                                             }
                                         }
@@ -160,7 +153,5 @@ fn main() {
             io::Error::new(io::ErrorKind::Other, e)
         });
 
-    rt.spawn(client.map_err(|_e| ()));
-    rt.run().unwrap();
-    //tokio::runtime::run(client.map_err(|_e| ()));
+    tokio::run(client.map_err(|_e| ()));
 }

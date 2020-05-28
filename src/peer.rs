@@ -17,8 +17,6 @@ use tokio_codec::{BytesCodec, Framed};
 use webrtc_sctp::stack::lowerlayer::{LowerLayerPacket, LowerLayerProtocol};
 use webrtc_sctp::stack::SctpStack;
 
-use tokio::runtime::current_thread::Handle;
-
 static GREETING: &str = "Greetings from the magical land of Rust!";
 static FUN_FACTS: &[&str] = &[
     "I'm told I have many excellent traits.",
@@ -47,7 +45,7 @@ impl PeerConnection {
     // 1. provide an mpsc or oneshot here to send websocket messages.
     // 2. since the UDP socket is open for business at the end of new(), simply send the candidate
     //    from the caller after new() is called.
-    pub fn new(handle: Handle, identity: Identity, ice: Ice) -> PeerConnection {
+    pub fn new(identity: Identity, ice: Ice) -> PeerConnection {
         let peer = ice.candidate.clone().unwrap().address;
         let UdpMuxSet { socket, stun, dtls } = UdpMuxSocket::connect(&peer).unwrap();
 
@@ -173,7 +171,7 @@ impl PeerConnection {
             .map_err(|_| ())
             .map(|_| ())
             .and_then(|_| peer_engine);
-        handle.spawn(client).unwrap();
+        tokio::spawn(client);
 
         PeerConnection {
             socket,
