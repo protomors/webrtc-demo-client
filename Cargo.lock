@@ -118,12 +118,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bytes"
-version = "0.5.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "130aac562c0dd69c56b3b1cc8ffd2e17be31d0b6c25b61c96b76231aa23e39e1"
-
-[[package]]
 name = "c_linked_list"
 version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -412,7 +406,7 @@ version = "0.1.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6ccf5ede3a895d8856620237b2f02972c1bbc78d2965ad7fe8838d4a0ed41f0"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "fnv",
  "itoa",
 ]
@@ -449,7 +443,7 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e1b822cc844905551931d6f81608ed5f50a79c1078a4e2b4d42dbc7c1eedfbf"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
 ]
 
 [[package]]
@@ -1051,7 +1045,7 @@ version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a09c0b5bb588872ab2f09afa13ee6e9dac11e10a0ec9e8e3ba39a5a5d530af6"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "mio",
  "num_cpus",
@@ -1075,7 +1069,7 @@ version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "25b2998660ba0e70d18684de5d06b70b70a3a747469af9dea7618cc59e75976b"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "tokio-io",
 ]
@@ -1129,7 +1123,7 @@ version = "0.1.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57fc868aae093479e3131e3d165c93b1c7474109d13c90ec0dda2a1bbfff0674"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "log",
 ]
@@ -1180,7 +1174,7 @@ version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98df18ed66e3b72e742f185882a9e201892407957e45fbff8da17ae7a7c51f72"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "iovec",
  "mio",
@@ -1234,7 +1228,7 @@ version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "38f95da5281a1a52e72fa3657e571279bcc2b163ba2897ed8eaa34ef97f24fda"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "native-tls",
  "tokio-dns-unofficial",
@@ -1250,7 +1244,7 @@ version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2a0b10e610b39c38b031a2fcab08e4b82f16ece36504988dcbd81dbba650d82"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "log",
  "mio",
@@ -1265,7 +1259,7 @@ version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5076db410d6fdc6523df7595447629099a1fdc47b3d9f896220780fa48faf798"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "futures",
  "iovec",
  "libc",
@@ -1285,7 +1279,7 @@ checksum = "8a0c2bd5aeb7dcd2bb32e472c8872759308495e5eccc942e929a513cd8d36110"
 dependencies = [
  "base64",
  "byteorder",
- "bytes 0.4.12",
+ "bytes",
  "http",
  "httparse",
  "input_buffer",
@@ -1378,7 +1372,7 @@ checksum = "cccddf32554fecc6acb585f82a32a72e28b48f8c4c1883ddfeeeaa96f7d8e519"
 name = "webrtc-demo-client"
 version = "0.1.0"
 dependencies = [
- "bytes 0.4.12",
+ "bytes",
  "candidateparser",
  "clap",
  "crc",
@@ -1409,7 +1403,7 @@ version = "0.0.0"
 dependencies = [
  "blake2",
  "byteorder",
- "bytes 0.5.4",
+ "bytes",
  "crc",
  "digest",
  "futures",

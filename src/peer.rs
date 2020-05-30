@@ -10,7 +10,6 @@ use crate::dtls;
 use crate::error::DemoError;
 use crate::ice::Ice;
 use crate::stun::StunStream;
-use bytes::Bytes;
 use tokio_openssl::SslStream;
 
 use tokio_codec::{BytesCodec, Framed};
@@ -243,8 +242,7 @@ impl Stream for DtlsLowerLayer {
                 let mut buffer: [u8; 1500] = [0; 1500];
                 buffer[..bytes.len()].copy_from_slice(&bytes);
                 Ok(Async::Ready(Some(LowerLayerPacket {
-                    buffer: buffer,
-                    length: bytes.len(),
+                    buffer: bytes.freeze(),
                     address: self.peer_address.clone(),
                 })))
             }
@@ -262,14 +260,11 @@ impl Sink for DtlsLowerLayer {
         &mut self,
         packet: LowerLayerPacket,
     ) -> StartSend<Self::SinkItem, Self::SinkError> {
-        let mut bytes = Bytes::with_capacity(packet.length);
-        bytes.extend_from_slice(&packet.buffer[0..packet.length]);
-
-        match self.dtls.start_send(bytes)? {
+        match self.dtls.start_send(packet.buffer.clone())? {
             AsyncSink::Ready => {
                 trace!(
                     "OUTGOING DATAGRAM:\n{}",
-                    crate::util::Hex(&packet.buffer[0..packet.length])
+                    crate::util::Hex(&packet.buffer)
                 );
                 self.dtls.poll_complete().unwrap(); // TODO: result?
                 Ok(AsyncSink::Ready)
